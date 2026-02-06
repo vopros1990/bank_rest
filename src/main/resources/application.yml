@@ -21,6 +21,15 @@ spring:
       ddl-auto: none
       dialect: org.hibernate.dialect.PostgreSQLDialect
 
+app:
+  jwt:
+    secretKey: c29tZVNlY3JldA==
+    tokenExpiration: 20d
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
 
 #Что нужно сделать:
 #  - Указать настройки подключения к базе данных.

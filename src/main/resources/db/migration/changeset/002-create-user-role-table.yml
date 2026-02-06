@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-user-role-table
+      author: dk
+      changes:
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    referencedTableName: app_users
+                    referencedColumnNames: id
+                    foreignKeyName: fk_user_role_user
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: user_role
+            columnNames: user_id, role
+            constraintName: pk_user_role
