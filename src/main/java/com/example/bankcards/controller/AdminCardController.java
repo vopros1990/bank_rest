@@ -103,7 +103,7 @@ public class AdminCardController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
-        service.delete(id);
+        service.deleteById(id);
 
         return ResponseEntity.noContent().build();
     }

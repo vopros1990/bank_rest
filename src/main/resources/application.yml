@@ -23,10 +23,10 @@ spring:
 
 app:
   jwt:
-    secretKey: VGhlIGZhc3Rlc3QgYW5kIG1vc3Qgc2VjdXJlIEJhc2U2NCBlbmNvZGluZyBhbmQgZGVjb2RpbmcgdG9vbA==
+    secretKey: ${JWT_SECRET:VGhlIGZhc3Rlc3QgYW5kIG1vc3Qgc2VjdXJlIEJhc2U2NCBlbmNvZGluZyBhbmQgZGVjb2RpbmcgdG9vbA==}
     tokenExpiration: 30m
   cardNumberHasher:
-    secretKey: VGhpcyBlbmNvZGluZyBoZWxwcyB0byBlbnN1cmUgdGhhdCB0aGUgZGF0YSByZW1haW5zIGludGFjdCB3aXRob3V0IG1vZGlmaWNhdGlvbiBkdXJpbmcgdHJhbnNwb3J0Lg==
+    secretKey: ${CARD_HASH_SECRET:VGhpcyBlbmNvZGluZyBoZWxwcyB0byBlbnN1cmUgdGhhdCB0aGUgZGF0YSByZW1haW5zIGludGFjdCB3aXRob3V0IG1vZGlmaWNhdGlvbiBkdXJpbmcgdHJhbnNwb3J0Lg==}
 
 springdoc:
   swagger-ui:

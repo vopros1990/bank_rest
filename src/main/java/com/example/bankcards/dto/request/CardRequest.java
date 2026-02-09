@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.Range;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Schema(description = "Запрос на создание или редактирование карты")
 public class CardRequest {
     @Schema(example = "2200765498762903")

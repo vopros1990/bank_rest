@@ -26,9 +26,9 @@ public class UserService {
     private final UserRepository repository;
 
     public List<UserResponse> findAll(
-            @PositiveOrZero(message = "Укажите номер страницы") int pageNumber,
+            @PositiveOrZero(message = "Укажите номер страницы") int page,
             @Positive(message = "Укажите лимит") int limit) {
-        return repository.findAll(PageRequest.of(pageNumber, limit))
+        return repository.findAll(PageRequest.of(page, limit))
                 .map(mapper::toResponse).toList();
     }
 

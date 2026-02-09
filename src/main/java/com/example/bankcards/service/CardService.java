@@ -115,7 +115,7 @@ public class CardService {
         return mapper.toResponse(cardRepository.save(card));
     }
 
-    public void delete(@Positive(message = "ID карты не может быть меньше 1") Long cardId) {
+    public void deleteById(@Positive(message = "ID карты не может быть меньше 1") Long cardId) {
         cardRepository.findById(cardId)
                 .orElseThrow(() -> new EntityNotFoundException("Карта с указанным ID не найдена"));
 
@@ -128,6 +128,8 @@ public class CardService {
                 .orElseThrow(() -> new EntityNotFoundException("Карта с указанным ID не найдена"));
 
         card.setStatus(CardStatus.ACTIVE);
+
+        cardRepository.save(card);
     }
 
     @Transactional
@@ -136,6 +138,8 @@ public class CardService {
                 .orElseThrow(() -> new EntityNotFoundException("Карта с указанным ID не найдена"));
 
         card.setStatus(CardStatus.BLOCKED);
+
+        cardRepository.save(card);
     }
 
     public BalanceResponse getBalance(

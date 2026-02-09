@@ -61,7 +61,7 @@ public class AdminUserController {
             description = "Удаляет пользователя по ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Карта удалена"),
+            @ApiResponse(responseCode = "204", description = "Пользователь удален"),
             @ApiResponse(responseCode = "400", description = "Неправильно указаны параметры запроса"),
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен (разрешен только администратору)"),
@@ -79,7 +79,7 @@ public class AdminUserController {
             description = "Активирует пользователя с указанным ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Карта удалена"),
+            @ApiResponse(responseCode = "200", description = "Успех"),
             @ApiResponse(responseCode = "400", description = "Неправильно указаны параметры запроса"),
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен (разрешен только администратору)"),
@@ -97,7 +97,7 @@ public class AdminUserController {
             description = "Блокирует пользователя с указанным ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Карта удалена"),
+            @ApiResponse(responseCode = "200", description = "Успех"),
             @ApiResponse(responseCode = "400", description = "Неправильно указаны параметры запроса"),
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен (разрешен только администратору)"),
