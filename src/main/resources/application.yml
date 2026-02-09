@@ -23,12 +23,18 @@ spring:
 
 app:
   jwt:
-    secretKey: c29tZVNlY3JldA==
-    tokenExpiration: 20d
+    secretKey: VGhlIGZhc3Rlc3QgYW5kIG1vc3Qgc2VjdXJlIEJhc2U2NCBlbmNvZGluZyBhbmQgZGVjb2RpbmcgdG9vbA==
+    tokenExpiration: 30m
+  cardNumberHasher:
+    secretKey: VGhpcyBlbmNvZGluZyBoZWxwcyB0byBlbnN1cmUgdGhhdCB0aGUgZGF0YSByZW1haW5zIGludGFjdCB3aXRob3V0IG1vZGlmaWNhdGlvbiBkdXJpbmcgdHJhbnNwb3J0Lg==
 
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+bootstrap:
+  admin:
+    password: ${ADMIN_PASSWORD:admin}
 
 
 #Что нужно сделать:

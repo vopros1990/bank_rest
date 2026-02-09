@@ -1,6 +1,6 @@
 package com.example.bankcards.security.jwt;
 
-import com.example.bankcards.dto.AuthorizationErrorResponse;
+import com.example.bankcards.dto.response.AuthorizationErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;

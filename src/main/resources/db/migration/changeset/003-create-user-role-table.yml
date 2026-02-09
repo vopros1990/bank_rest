@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 002-create-user-role-table
+      id: 003-create-user-role-table
       author: dk
       changes:
         - createTable:
@@ -11,15 +11,18 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
-                    referencedTableName: app_users
+                    referencedTableName: users
                     referencedColumnNames: id
                     foreignKeyName: fk_user_role_user
               - column:
-                  name: role
-                  type: varchar(50)
+                  name: role_id
+                  type: BIGINT
                   constraints:
                     nullable: false
+                    referencedTableName: roles
+                    referencedColumnNames: id
+                    foreignKeyName: fk_user_role_role
         - addPrimaryKey:
             tableName: user_role
-            columnNames: user_id, role
+            columnNames: user_id, role_id
             constraintName: pk_user_role

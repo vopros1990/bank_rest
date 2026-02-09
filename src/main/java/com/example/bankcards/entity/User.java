@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "app_users")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,28 +21,44 @@ public class User {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     @EqualsAndHashCode.Include
     private String username;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER, targetClass = RoleType.class)
-    @CollectionTable(
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private Set<RoleType> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void deleteRole(Role role) {
+        this.roles.remove(role);
+    }
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
+
+    @OneToMany(mappedBy = "holder", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Card> cards;
 }

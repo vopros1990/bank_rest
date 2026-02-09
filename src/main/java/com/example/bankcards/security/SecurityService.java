@@ -1,13 +1,19 @@
 package com.example.bankcards.security;
 
-import com.example.bankcards.dto.AuthenticationResponse;
-import com.example.bankcards.dto.LoginRequest;
-import com.example.bankcards.dto.RegisterUserRequest;
+import com.example.bankcards.dto.response.AuthenticationResponse;
+import com.example.bankcards.dto.request.AuthenticationRequest;
+import com.example.bankcards.dto.request.UserRequest;
+import com.example.bankcards.dto.response.UserResponse;
+import com.example.bankcards.entity.Role;
 import com.example.bankcards.entity.RoleType;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.entity.UserStatus;
+import com.example.bankcards.exception.AlreadyExistsException;
+import com.example.bankcards.exception.UserBlockedException;
+import com.example.bankcards.mapper.UserMapper;
+import com.example.bankcards.repository.RoleRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.jwt.JwtUtils;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +32,12 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Validated
 public class SecurityService {
+
+    private final UserMapper mapper;
+
     private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
 
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +45,7 @@ public class SecurityService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationResponse authenticateUser(@Valid LoginRequest request) {
+    public AuthenticationResponse authenticateUser(@Valid AuthenticationRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -42,9 +53,12 @@ public class SecurityService {
                 )
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
+
+        if (!userDetails.isEnabled())
+            throw new UserBlockedException("Доступ запрещен! Пользователь заблокирован");
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -54,21 +68,26 @@ public class SecurityService {
                 .id(userDetails.getId())
                 .username(userDetails.getUsername())
                 .roles(roles)
-                .token(jwtUtils.generateJwtToken(userDetails))
+                .token(jwtUtils.generateJwtToken(userDetails.getUsername()))
                 .build();
     }
 
-    public void registerUser(@Valid RegisterUserRequest request) {
-        Set<RoleType> roles = Set.of(RoleType.USER);
+    @Transactional
+    public UserResponse registerUser(@Valid UserRequest request) {
+        if (userRepository.existsByUsername(request.getUsername()))
+            throw new AlreadyExistsException("Имя пользователя уже занято. Выберите другое");
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .status(UserStatus.ACTIVE)
-                .roles(roles)
-                .build();
+        if (userRepository.existsByEmail(request.getEmail()))
+            throw new AlreadyExistsException("Email пользователя уже существует");
 
-        userRepository.saveAndFlush(user);
+        Role role = roleRepository.findByRole(RoleType.USER).orElseGet(() -> Role.from(RoleType.USER));
+
+        User user = mapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Set.of(role));
+
+        return mapper.toResponse(userRepository.save(user));
     }
+
+
 }

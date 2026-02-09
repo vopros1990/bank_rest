@@ -2,4 +2,10 @@ databaseChangeLog:
   - include:
       file: classpath:db/migration/changeset/001-create-user-table.yml
   - include:
-      file: classpath:db/migration/changeset/002-create-user-role-table.yml
+      file: classpath:db/migration/changeset/002-create-role-table.yml
+  - include:
+      file: classpath:db/migration/changeset/003-create-user-role-table.yml
+  - include:
+      file: classpath:db/migration/changeset/004-create-cards-table.yml
+  - include:
+      file: classpath:db/migration/changeset/005-create-card-block-requests-table.yml
