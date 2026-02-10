@@ -81,3 +81,5 @@ mvn spring-boot:run
 ```
 java -jar target/bankcards-0.0.1-SNAPSHOT.jar
 ```
+## Документация
+Вся документация по API доступна по адресу /swagger-ui/index.html
